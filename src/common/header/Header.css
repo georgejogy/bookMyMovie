@@ -1,0 +1,56 @@
+.header {
+  background-color: #222;
+  height: 36px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-right: 32px;
+  padding-left: 16px;
+}
+
+.img-fluid {
+  background-color: #ff7f7f;
+  height: 35px;
+  float: left;
+  animation: rotation 8s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
+
+.closeButton{
+  color: #222;
+  float: right;
+}
+.buttonLogin {
+  float: right;
+}
+
+.forms{
+  display: block;
+  text-align: center; 
+}
+
+.tabAllignments{
+  display: block;
+  text-align: center;
+}
+
+.modalStyling{
+  align-items: center;
+  display: flex !important;
+}
+
+.custom-model-class{
+  height:500px;
+  width:400px;
+  margin:auto;
+}
+
