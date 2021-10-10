@@ -37,6 +37,7 @@ const Header = function (props) {
   const [loginPassword,setLoginPassword] = React.useState("");
   const [buttonLogin,setButtonLogin] = React.useState("LOGIN");
   const [BookShow,setBookShow] = React.useState('');
+  const [signUp,setSignUp]=React.useState('');
 
   const openModal = () => {
     setIsOpen(true);
@@ -116,8 +117,11 @@ const Header = function (props) {
     })
       .then((response) => {
         response.json();
+        setSignUp('Registration Successfull');
       })
-      .catch((error) => console.log(error));
+      .catch((error) => {
+        setSignUp('Registration not successful')
+        console.log(error)});
   };
 
 const loginOrLogout =()=>{
@@ -144,9 +148,9 @@ const loginOrLogout =()=>{
         <Button variant="contained" className="buttonLogin" onClick={loginOrLogout}>
           {buttonLogin}
         </Button>
-        <Button variant="contained" className="buttonLogin" color="primary">
-          {buttonLogin}
-        </Button>
+        {/* <Button variant="contained" className="buttonLogin" color="primary">
+          {BookShow}
+        </Button> */}
         <div className="modalStyling">
           <ReactModal
             isOpen={modalIsOpen}
@@ -206,7 +210,7 @@ const loginOrLogout =()=>{
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required={true}
-                    helperText="Incorrect entry."
+                    
                   />
                   <br />
                   <br />
@@ -216,7 +220,7 @@ const loginOrLogout =()=>{
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required={true}
-                    helperText="Incorrect entry."
+                    
                   />
                   <br />
                   <br />
@@ -247,9 +251,13 @@ const loginOrLogout =()=>{
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required={true}
+                    // helperText={mobileError ? "Error" : "Perfect!"}
                   />
                   <br />
                   <br />
+                  <div>
+                    {signUp}
+                  </div>
                   <Button
                   variant="contained"
                   color="primary"
