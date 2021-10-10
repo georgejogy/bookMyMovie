@@ -248,7 +248,6 @@ const Header = function (props) {
                   <TextField
                     label="Mobile"
                     variant="standard"
-                    value="Mobile"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required={true}
