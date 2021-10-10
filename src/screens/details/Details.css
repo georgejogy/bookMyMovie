@@ -1,0 +1,38 @@
+span.back-button{
+    margin-left: 24px;
+    margin-top: 8px;
+    height:24px;
+    margin-bottom: 0px;
+}
+
+.Details-Page{
+    display: flex;
+}
+
+.Details-Page > div{
+    flex-wrap: nowrap;
+}
+
+.first-quadrant{
+    width: 20%;
+}
+
+.second-quadrant{
+    width: 60%;
+}
+
+.third-quadrant{
+    width: 20%;
+}
+
+p.plot-details{
+    margin-top: 16px;
+}
+
+div.youtube-trailer{
+    margin-top: 16px;
+}
+
+p.artist-tag{
+    margin-top: 16px;
+}

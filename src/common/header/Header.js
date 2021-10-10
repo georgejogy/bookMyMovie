@@ -38,6 +38,7 @@ const Header = function (props) {
   const [buttonLogin,setButtonLogin] = React.useState("LOGIN");
   const [BookShow,setBookShow] = React.useState('');
   const [signUp,setSignUp]=React.useState('');
+  const [accessTokenValue,setAccessToken] = React.useState('');
 
   const openModal = () => {
     setIsOpen(true);
@@ -74,7 +75,8 @@ const Header = function (props) {
           "access-token",
           rawResponse.headers.get("access-token")
         );
-        //window.location.href = "./header.js";
+        setAccessToken(rawResponse.headers.get("access-token"));
+        console.log(rawResponse.headers.get("access-token"));
         setLoginState(true);
         setButtonLogin('LOGOUT');
         setIsOpen(false);
@@ -87,6 +89,31 @@ const Header = function (props) {
     }
   }
 
+  async function logout(){
+    //const param = window.sessionStorage.getItem("access-token");
+    console.log(accessTokenValue);
+    const rawResponse = await fetch(
+      "http://localhost:8085/api/v1/auth/logout",
+      {
+        methos:"POST",
+        headers: {
+          "Accept": "*/*",
+          "Content-Type": "application/json",
+            "authorization": `Bearer ${accessTokenValue}`,
+        }
+      }
+    );
+
+    const result = await rawResponse.json();
+    if(rawResponse.ok){
+      setButtonLogin('LOGIN');
+    }
+    else{
+      const error=new Error();
+      error.message = result.message || "Something went wrong";
+    }
+  }
+  
   const inputChangedHandler = (e) => {
     const state = loginContent;
     state[e.target.name] = e.target.value;
@@ -129,8 +156,9 @@ const loginOrLogout =()=>{
     setIsOpen(true);
     setButtonLogin('LOGIN');
   }
-  else{
-    setButtonLogin('LOGOUT');
+  else {
+    // setButtonLogin('LOGOUT');
+    logout();
   }
 }
 

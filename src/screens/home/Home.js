@@ -1,4 +1,5 @@
 import {
+  Card,
   GridList,
   GridListTile,
   GridListTileBar,
@@ -37,7 +38,6 @@ const Home = (props) => {
       <div className="home-container">
         <Header></Header>
         <div className="homePageHeader">Upcoming Movies</div>
-        {console.log(responser)}
         <GridList cols={6} className="custom-grid" cellHeight="250">
           {responser.map((tile) => (
             <GridListTile key={tile.poster_url} rows={1}>
@@ -47,11 +47,6 @@ const Home = (props) => {
               />
               <GridListTileBar
                 title={tile.title}
-                actionIcon={
-                  <IconButton>
-                    <FavoriteBorderOutlined />
-                  </IconButton>
-                }
               />
             </GridListTile>
           ))}
@@ -74,7 +69,11 @@ const Home = (props) => {
               ))}
             </GridList>
           </div>
-          <div className="movie-filter"></div>
+          <div className="movie-filter">
+            <Card>
+
+            </Card>
+          </div>
         </div>
       </div>
     </div>
