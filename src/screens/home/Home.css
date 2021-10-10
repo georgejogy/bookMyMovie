@@ -8,3 +8,25 @@
 .gridHeightAdjuster{
     height: 250px;
 }
+
+ ul.custom-grid{
+    flex-wrap: nowrap;
+} 
+
+ul.movie-home-grid li{
+    margin: 16px;   
+}
+
+.home-details{
+    display: flex;
+
+}
+
+.home-details > div{
+    flex-wrap: nowrap;
+
+}
+
+.movie-display{
+    width:76%;
+}

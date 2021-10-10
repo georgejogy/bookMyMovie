@@ -5,19 +5,18 @@ import {
   IconButton,
 } from "@material-ui/core";
 import { FavoriteBorderOutlined } from "@material-ui/icons";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../common/header/Header";
+import { Link } from "react-router-dom";
 import "./Home.css";
 
-const Home = function (props) {
-  const [responser, setResponser] = React.useState([]);
-  const posterArray = [];
-  let titleArray = [];
-  let properArray = [];
-  let properArrayTwo = [];
+const Home = (props) => {
+  const [responser, setResponser] = useState([]);
+
+  console.log(responser);
   useEffect(() => {
     async function checkTheResponse() {
-      const rawResponse = await fetch("http://localhost:8085/api/v1/movies", {
+      fetch("http://localhost:8085/api/v1/movies", {
         method: "GET",
         headers: {
           Accept: "application/json",
@@ -26,77 +25,25 @@ const Home = function (props) {
       })
         .then((rawsTheResponse) => rawsTheResponse.json())
         .then((receivedRes) => {
-          let tmpArray = [];
-          for (var i = 0; i < receivedRes.movies.length; i++) {
-            tmpArray.push(receivedRes.movies[i].poster_url);
-            titleArray.push(receivedRes.movies[i].title);
-          }
-          properArray = receivedRes.movies;
-          console.log(properArray);
-          setResponser([...properArray]);
-          console.log(responser);
+          setResponser((arr) => [...arr, ...receivedRes.movies]);
         });
-      //console.log(rawResponse);
-      //setResponse(rawResponse);
-      //console.log(response);
     }
 
     checkTheResponse();
   }, []);
 
-  
-  const tileData = [
-    {
-      img: "https://i.imagesup.co/images2/0__05c7e898ac694e.jpg",
-      title: "fun",
-      author: "Image by Free-Photos on Pixabay",
-      cols: 2,
-      featured: true,
-    },
-    {
-      img: "https://i.imagesup.co/images2/0__05c7e8a33418ff.jpg",
-      title: "dog",
-      author: "Image by Free-Photos on Pixabay",
-    },
-    {
-      img: "https://cdn.pixabay.com/photo/2014/12/27/15/31/camera-581126_1280.jpg",
-      title: "Camera",
-      author: "Image by Free-Photos on Pixabay",
-    },
-    {
-      img: "https://cdn.pixabay.com/photo/2017/05/12/08/29/coffee-2306471_1280.jpg",
-      title: "Morning",
-      author: "Image by Free-Photos on Pixabay",
-      featured: true,
-    },
-    {
-      img: "https://cdn.pixabay.com/photo/2017/05/13/12/40/fashion-2309519__480.jpg",
-      title: "Hats",
-      author: "Hans",
-    },
-    {
-      img: "https://cdn.pixabay.com/photo/2015/10/26/11/10/honey-1006972__480.jpg",
-      title: "Honey",
-      author: "Image by Free-Photos on Pixabay",
-    },
-  ];
-
-  const modArray = properArray;
-  console.log("this is mod array" + properArray);
   return (
     <div>
       <div className="home-container">
         <Header></Header>
         <div className="homePageHeader">Upcoming Movies</div>
-        <GridList cols={6} rows={1}>
-          {console.log("rhis is the tem paray " , properArray)}
-          {tileData.map((tile) => (
-            <GridListTile key={tile.img} rows={1}>
-              {console.log(tile.img)}
+        {console.log(responser)}
+        <GridList cols={6} className="custom-grid" cellHeight="250">
+          {responser.map((tile) => (
+            <GridListTile key={tile.poster_url} rows={1}>
               <img
-                src={tile.img}
+                src={tile.poster_url}
                 alt={tile.title}
-                className="gridHeightAdjuster"
               />
               <GridListTileBar
                 title={tile.title}
@@ -109,6 +56,26 @@ const Home = function (props) {
             </GridListTile>
           ))}
         </GridList>
+        <div className="home-details">
+          <div className="movie-display">
+            <GridList cols={4} className="movie-home-grid" cellHeight="350">
+              {responser.map((tile) => (
+                
+                <GridListTile key={tile.poster_url} rows={1} >
+                  <Link to={`/movie/${tile.id}`} >
+                   <img
+                    src={tile.poster_url}
+                    alt={tile.title}
+                  />
+                  <GridListTileBar title={tile.title} />
+                  </Link>
+                </GridListTile>
+                
+              ))}
+            </GridList>
+          </div>
+          <div className="movie-filter"></div>
+        </div>
       </div>
     </div>
   );
