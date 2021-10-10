@@ -2,8 +2,6 @@ import {
   Button,
   FormControl,
   IconButton,
-  Input,
-  InputLabel,
   Tabs,
   Tab,
   TextField,
@@ -22,27 +20,17 @@ function TabPanel(props) {
 
 const Header = function (props) {
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const [loginContent, setLoginContent] = React.useState({
-    login: "",
-    password: "",
-  });
   const [firstName, setFirstName] = React.useState("");
   const [lastName, setLastName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [phone, setPhone] = React.useState("");
   const [value, setValue] = React.useState(0);
-  const [loginState, setLoginState] = React.useState(false);
-  const [userName,setUserName] = React.useState("");
-  const [loginPassword,setLoginPassword] = React.useState("");
-  const [buttonLogin,setButtonLogin] = React.useState("LOGIN");
-  const [BookShow,setBookShow] = React.useState('');
-  const [signUp,setSignUp]=React.useState('');
-  const [accessTokenValue,setAccessToken] = React.useState('');
-
-  const openModal = () => {
-    setIsOpen(true);
-  };
+  const [userName, setUserName] = React.useState("");
+  const [loginPassword, setLoginPassword] = React.useState("");
+  const [buttonLogin, setButtonLogin] = React.useState("LOGIN");
+  const [signUp, setSignUp] = React.useState("");
+  const [accessTokenValue, setAccessToken] = React.useState("");
 
   const closeModal = () => {
     setIsOpen(false);
@@ -53,7 +41,7 @@ const Header = function (props) {
   };
 
   async function login() {
-    console.log(userName,loginPassword)
+    console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
     try {
       const rawResponse = await fetch(
@@ -77,8 +65,7 @@ const Header = function (props) {
         );
         setAccessToken(rawResponse.headers.get("access-token"));
         console.log(rawResponse.headers.get("access-token"));
-        setLoginState(true);
-        setButtonLogin('LOGOUT');
+        setButtonLogin("LOGOUT");
         setIsOpen(false);
       } else {
         const error = new Error();
@@ -89,41 +76,29 @@ const Header = function (props) {
     }
   }
 
-  async function logout(){
+  async function logout() {
     //const param = window.sessionStorage.getItem("access-token");
     console.log(accessTokenValue);
     const rawResponse = await fetch(
       "http://localhost:8085/api/v1/auth/logout",
       {
-        methos:"POST",
+        methos: "POST",
         headers: {
-          "Accept": "*/*",
+          Accept: "*/*",
           "Content-Type": "application/json",
-            "authorization": `Bearer ${accessTokenValue}`,
-        }
+          authorization: `Bearer ${accessTokenValue}`,
+        },
       }
     );
 
     const result = await rawResponse.json();
-    if(rawResponse.ok){
-      setButtonLogin('LOGIN');
-    }
-    else{
-      const error=new Error();
+    if (rawResponse.ok) {
+      setButtonLogin("LOGIN");
+    } else {
+      const error = new Error();
       error.message = result.message || "Something went wrong";
     }
   }
-  
-  const inputChangedHandler = (e) => {
-    const state = loginContent;
-    state[e.target.name] = e.target.value;
-    setLoginContent({ ...state });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log(firstName, lastName, email, password, phone);
-  };
 
   const handleSubmitSignup = async () => {
     const params = {
@@ -144,23 +119,23 @@ const Header = function (props) {
     })
       .then((response) => {
         response.json();
-        setSignUp('Registration Successfull');
+        setSignUp("Registration Successfull");
       })
       .catch((error) => {
-        setSignUp('Registration not successful')
-        console.log(error)});
+        setSignUp("Registration not successful");
+        console.log(error);
+      });
   };
 
-const loginOrLogout =()=>{
-  if(buttonLogin=='LOGIN'){
-    setIsOpen(true);
-    setButtonLogin('LOGIN');
-  }
-  else {
-    // setButtonLogin('LOGOUT');
-    logout();
-  }
-}
+  const loginOrLogout = () => {
+    if (buttonLogin === "LOGIN") {
+      setIsOpen(true);
+      setButtonLogin("LOGIN");
+    } else {
+      // setButtonLogin('LOGOUT');
+      logout();
+    }
+  };
 
   return (
     <div>
@@ -172,8 +147,12 @@ const loginOrLogout =()=>{
             alt="logo"
           />
         </div>
-        
-        <Button variant="contained" className="buttonLogin" onClick={loginOrLogout}>
+
+        <Button
+          variant="contained"
+          className="buttonLogin"
+          onClick={loginOrLogout}
+        >
           {buttonLogin}
         </Button>
         {/* <Button variant="contained" className="buttonLogin" color="primary">
@@ -219,11 +198,7 @@ const loginOrLogout =()=>{
                   />
                   <br />
                   <br />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={login}
-                  >
+                  <Button variant="contained" color="primary" onClick={login}>
                     LOGIN
                   </Button>
                 </FormControl>
@@ -238,7 +213,6 @@ const loginOrLogout =()=>{
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     required={true}
-                    
                   />
                   <br />
                   <br />
@@ -248,7 +222,6 @@ const loginOrLogout =()=>{
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     required={true}
-                    
                   />
                   <br />
                   <br />
@@ -279,22 +252,18 @@ const loginOrLogout =()=>{
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     required={true}
-                    // helperText={mobileError ? "Error" : "Perfect!"}
                   />
                   <br />
                   <br />
-                  <div>
-                    {signUp}
-                  </div>
+                  <div>{signUp}</div>
                   <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmitSignup}
-                >
-                  SIGN UP
-                </Button>
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmitSignup}
+                  >
+                    SIGN UP
+                  </Button>
                 </FormControl>
-                
               </TabPanel>
               {/*  */}
             </div>

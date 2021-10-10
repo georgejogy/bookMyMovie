@@ -1,10 +1,14 @@
-import { GridList, GridListTile, GridListTileBar, Typography } from "@material-ui/core";
+import {
+  GridList,
+  GridListTile,
+  GridListTileBar,
+  Typography,
+} from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Header from "../../common/header/Header";
 import { Link } from "react-router-dom";
 import "./Details.css";
 import YouTube from "react-youtube";
-import { router } from "react-router-dom";
 import { StarBorder } from "@material-ui/icons";
 
 const Details = (props) => {
@@ -29,7 +33,6 @@ const Details = (props) => {
       })
         .then((response) => response.json())
         .then((receivedRes) => {
-          console.log(receivedRes);
           setDetailed(receivedRes);
           setGenres((arr) => [...arr, ...receivedRes.genres]);
           setDuration(receivedRes.duration);
@@ -39,20 +42,21 @@ const Details = (props) => {
           setStoryLine(receivedRes.storyline);
           let videoDetails = receivedRes.trailer_url.split("v=")[1];
           let ampersandPosition = videoDetails.indexOf("&");
-          if (ampersandPosition != -1) {
+          if (ampersandPosition !== -1) {
             videoDetails = videoDetails.substring(0, ampersandPosition);
           }
           setVideoID(videoDetails);
-          if(receivedRes.artists != null){
-          setArtists((arr) => [...arr, ...receivedRes.artists]);
-          }
-          else{
-              let artists=[{
-                  "profile_url":"",
-                  "first_name":"No",
-                  "last_name":"Data"
-              }]
-              setArtists((arr) => [...arr,...artists]);
+          if (receivedRes.artists != null) {
+            setArtists((arr) => [...arr, ...receivedRes.artists]);
+          } else {
+            let artists = [
+              {
+                profile_url: "",
+                first_name: "No",
+                last_name: "Data",
+              },
+            ];
+            setArtists((arr) => [...arr, ...artists]);
           }
         });
     }
@@ -70,18 +74,18 @@ const Details = (props) => {
       </Link>
       <div className="Details-Page">
         <div className="first-quadrant">
-          <img src={details.poster_url} />
+          <img src={details.poster_url} alt={details.title} />
         </div>
         <div className="second-quadrant">
           <Typography variant="headline" component="h2">
             {details.title}
           </Typography>
-          {console.log(details)}
+
           <Typography>
             <b>Genres: </b>
-            {genres.map((genre) => {
-              <span> {genre},</span>;
-            })}
+            {genres.map((genre) => (
+              <span>{genre},</span>
+            ))}
           </Typography>
           <Typography>
             <b>Duration: </b>
@@ -122,12 +126,11 @@ const Details = (props) => {
               <GridListTile key={tile.profile_url}>
                 <img src={tile.profile_url} alt={tile.title} />
                 <GridListTileBar
-                  title={tile.first_name.concat(" ",tile.last_name)}
+                  title={tile.first_name.concat(" ", tile.last_name)}
                 />
               </GridListTile>
             ))}
           </GridList>
-          
         </div>
       </div>
     </div>
