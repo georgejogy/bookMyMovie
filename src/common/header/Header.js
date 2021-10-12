@@ -41,8 +41,6 @@ const Header = function (props) {
     setValue(newValue);
   };
 
-  const customStyles = {};
-
   async function login() {
     console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
@@ -118,7 +116,11 @@ const Header = function (props) {
       mobile_number: phone,
       password: password,
     };
-    console.log(params);
+    if(email==="" || firstName==="" || lastName==="" || phone==="" || password==""){
+      setSignUp("Enter all the mandatory details !")
+    }
+    else{
+      console.log(params);
     fetch("http://localhost:8085/api/v1/signup", {
       body: JSON.stringify(params),
       method: "POST",
@@ -129,12 +131,19 @@ const Header = function (props) {
     })
       .then((response) => {
         response.json();
-        setSignUp("Registration Successfull");
+        setSignUp("Registration Successfull !");
+        setFirstName('');
+        setLastName('');
+        setEmail('');
+        setPassword('');
+        setPhone('');
       })
       .catch((error) => {
         setSignUp("Registration not successful");
         console.log(error);
       });
+    }
+    
   };
 
   const loginOrLogout = () => {
@@ -162,12 +171,12 @@ const Header = function (props) {
         {/* <Button variant="contained" className="buttonLogin" color="primary">
           {BookShow}
         </Button> */}
+        <div className="modalStyling">
           <ReactModal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Login Modal"
             ariaHideApp={false}
-            style={customStyles}
             className="custom-model-class"
           >
             <IconButton onClick={closeModal} className="closeButton">
@@ -202,10 +211,11 @@ const Header = function (props) {
                   />
                   <br />
                   <br />
-                  <div>{loginDetail}</div>
+                  <div className="error-details-login">{loginDetail}</div>
                   <Button variant="contained" color="primary" onClick={login}>
                     LOGIN
                   </Button>
+                  <br/>
                 </FormControl>
               </TabPanel>
               <TabPanel value={value} index={1}>
@@ -259,7 +269,7 @@ const Header = function (props) {
                   />
                   <br />
                   <br />
-                  <div>{signUp}</div>
+                  <div className="error-details-login">{signUp}</div>
                   <Button
                     variant="contained"
                     color="primary"
@@ -267,11 +277,13 @@ const Header = function (props) {
                   >
                     SIGN UP
                   </Button>
+                  <br/>
                 </FormControl>
               </TabPanel>
               {/*  */}
             </div>
           </ReactModal>
+        </div>
       </div>
     </div>
   );
