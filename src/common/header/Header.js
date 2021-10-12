@@ -31,7 +31,7 @@ const Header = function (props) {
   const [buttonLogin, setButtonLogin] = React.useState("LOGIN");
   const [signUp, setSignUp] = React.useState("");
   const [accessTokenValue, setAccessToken] = React.useState("");
-  const [loginDetail,setLoginDetail] = React.useState("");
+  const [loginDetail, setLoginDetail] = React.useState("");
 
   const closeModal = () => {
     setIsOpen(false);
@@ -41,13 +41,14 @@ const Header = function (props) {
     setValue(newValue);
   };
 
+  const customStyles = {};
+
   async function login() {
     console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
-    if(userName=="" || loginPassword==""){
-      setLoginDetail('Enter all the values');
-    }
-    else{
+    if (userName == "" || loginPassword == "") {
+      setLoginDetail("Enter all the values");
+    } else {
       try {
         const rawResponse = await fetch(
           "http://localhost:8085/api/v1/auth/login",
@@ -60,7 +61,7 @@ const Header = function (props) {
             },
           }
         );
-  
+
         const result = await rawResponse.json();
         if (rawResponse.ok) {
           window.sessionStorage.setItem("user-details", JSON.stringify(result));
@@ -83,7 +84,6 @@ const Header = function (props) {
         setLoginDetail("Incorrect username or password");
       }
     }
-    
   }
 
   async function logout() {
@@ -92,7 +92,7 @@ const Header = function (props) {
     const rawResponse = await fetch(
       "http://localhost:8085/api/v1/auth/logout",
       {
-        methos: "POST",
+        method: "POST",
         headers: {
           Accept: "*/*",
           "Content-Type": "application/json",
@@ -101,7 +101,7 @@ const Header = function (props) {
       }
     );
 
-    const result = await rawResponse.json();
+    const result = rawResponse.json();
     if (rawResponse.ok) {
       setButtonLogin("LOGIN");
     } else {
@@ -150,13 +150,7 @@ const Header = function (props) {
   return (
     <div>
       <div className="header">
-        <div>
-          <img
-            className="img-fluid rotate linear infinite"
-            src={Logo}
-            alt="logo"
-          />
-        </div>
+        <img className="img-fluid" src={Logo} alt="logo" />
 
         <Button
           variant="contained"
@@ -168,12 +162,12 @@ const Header = function (props) {
         {/* <Button variant="contained" className="buttonLogin" color="primary">
           {BookShow}
         </Button> */}
-        <div className="modalStyling">
           <ReactModal
             isOpen={modalIsOpen}
             onRequestClose={closeModal}
             contentLabel="Login Modal"
             ariaHideApp={false}
+            style={customStyles}
             className="custom-model-class"
           >
             <IconButton onClick={closeModal} className="closeButton">
@@ -278,7 +272,6 @@ const Header = function (props) {
               {/*  */}
             </div>
           </ReactModal>
-        </div>
       </div>
     </div>
   );

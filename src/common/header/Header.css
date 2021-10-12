@@ -10,13 +10,12 @@
 .img-fluid {
   background-color: #ff7f7f;
   height: 35px;
-  float: left;
-  animation: rotation 8s;
+  animation: logo-revolver 8s;
   animation-timing-function: linear;
   animation-iteration-count: infinite;
 }
 
-@keyframes rotation {
+@keyframes logo-revolver {
   from {
     transform: rotate(0deg);
   }
@@ -25,7 +24,7 @@
   }
 }
 
-.closeButton{
+.closeButton {
   color: #222;
   float: right;
 }
@@ -33,26 +32,25 @@
   float: right;
 }
 
-.forms{
+.forms {
   display: block;
-  text-align: center; 
+  text-align: center;
 }
 
-.tabAllignments{
+.tabAllignments {
   display: block;
   text-align: center;
 }
 
 .modalStyling{
-  align-items: center;
-  display: flex !important;
+   align-items: center;
+   display: flex !important; 
 }
 
-.custom-model-class{
-  height:500px;
-  width:400px;
+.custom-model-class {
+  height: 500px;
+  width: 400px;
   margin:auto;
-  background:white;
+  background: white;
   border: 1px black;
-}
-
+} 
