@@ -31,6 +31,7 @@ const Header = function (props) {
   const [buttonLogin, setButtonLogin] = React.useState("LOGIN");
   const [signUp, setSignUp] = React.useState("");
   const [accessTokenValue, setAccessToken] = React.useState("");
+  const [loginDetail,setLoginDetail] = React.useState("");
 
   const closeModal = () => {
     setIsOpen(false);
@@ -43,37 +44,46 @@ const Header = function (props) {
   async function login() {
     console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
-    try {
-      const rawResponse = await fetch(
-        "http://localhost:8085/api/v1/auth/login",
-        {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json;charset=UTF-8",
-            authorization: `Basic ${param}`,
-          },
-        }
-      );
-
-      const result = await rawResponse.json();
-      if (rawResponse.ok) {
-        window.sessionStorage.setItem("user-details", JSON.stringify(result));
-        window.sessionStorage.setItem(
-          "access-token",
-          rawResponse.headers.get("access-token")
-        );
-        setAccessToken(rawResponse.headers.get("access-token"));
-        console.log(rawResponse.headers.get("access-token"));
-        setButtonLogin("LOGOUT");
-        setIsOpen(false);
-      } else {
-        const error = new Error();
-        error.message = result.message || "Something went wrong.";
-      }
-    } catch (e) {
-      alert(`Error: ${e.message}`);
+    if(userName=="" || loginPassword==""){
+      setLoginDetail('Enter all the values');
     }
+    else{
+      try {
+        const rawResponse = await fetch(
+          "http://localhost:8085/api/v1/auth/login",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json;charset=UTF-8",
+              authorization: `Basic ${param}`,
+            },
+          }
+        );
+  
+        const result = await rawResponse.json();
+        if (rawResponse.ok) {
+          window.sessionStorage.setItem("user-details", JSON.stringify(result));
+          window.sessionStorage.setItem(
+            "access-token",
+            rawResponse.headers.get("access-token")
+          );
+          setAccessToken(rawResponse.headers.get("access-token"));
+          console.log(rawResponse.headers.get("access-token"));
+          setButtonLogin("LOGOUT");
+          setIsOpen(false);
+          setLoginDetail("");
+        } else {
+          const error = new Error();
+          error.message = result.message || "Something went wrong.";
+          setLoginDetail("Incorrect username or password");
+        }
+      } catch (e) {
+        alert(`Error: ${e.message}`);
+        setLoginDetail("Incorrect username or password");
+      }
+    }
+    
   }
 
   async function logout() {
@@ -198,6 +208,7 @@ const Header = function (props) {
                   />
                   <br />
                   <br />
+                  <div>{loginDetail}</div>
                   <Button variant="contained" color="primary" onClick={login}>
                     LOGIN
                   </Button>

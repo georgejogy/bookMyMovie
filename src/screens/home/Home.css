@@ -30,3 +30,16 @@ ul.movie-home-grid li{
 .movie-display{
     width:76%;
 }
+
+.movie-filter{
+    width:24%;
+    
+}
+
+.movie-filter > div{
+    margin : 10px 20px;
+}
+
+.movie-filter .filter-forms{
+    width: 100%;
+}
