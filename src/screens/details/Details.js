@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Header from "../../common/header/Header";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import "./Details.css";
 import YouTube from "react-youtube";
 import { StarBorder } from "@material-ui/icons";
@@ -20,11 +20,13 @@ const Details = (props) => {
   const [storyLine, setStoryLine] = useState();
   const [videoId, setVideoID] = useState();
   const [artists, setArtists] = useState([]);
+  const [movieId, setMovieId] = useState();
 
   useEffect(() => {
     async function executeForState() {
       let location = window.location.href;
       let id = location.split("movie/")[1];
+      setMovieId(id);
       fetch(`http://localhost:8085/api/v1/movies/${id}`, {
         method: "GET",
         headers: {
@@ -66,7 +68,11 @@ const Details = (props) => {
 
   return (
     <div>
-      <Header buttonNeeded="Book Show" buttonRequest={true}></Header>
+      <Header
+        buttonNeeded="Book Show"
+        buttonRequest={true}
+        getDetails={movieId}
+      ></Header>
       <Link to="/">
         <Typography variant="button" className="back-button">
           &lt; Back To Home
@@ -113,11 +119,14 @@ const Details = (props) => {
           <Typography>
             <b>Rate this movie:</b>
           </Typography>
+          {[].fill(0).map((s, i) => (
+            <StarBorder />
+          ))}
+          {/* <StarBorder style={{ color: "yellow" }}></StarBorder>
           <StarBorder></StarBorder>
           <StarBorder></StarBorder>
           <StarBorder></StarBorder>
-          <StarBorder></StarBorder>
-          <StarBorder></StarBorder>
+          <StarBorder></StarBorder> */}
           <Typography className="artist-tag">
             <b>Artists:</b>
           </Typography>

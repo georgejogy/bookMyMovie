@@ -24,13 +24,10 @@ import "./Home.css";
 const Home = (props) => {
   const [responser, setResponser] = useState([]);
   const [movieName, setMovieName] = useState("");
-  const [genres, setGenres] = useState([]);
   const [genreList, setGenreList] = useState([]);
-  const [artists, setArtists] = useState([]);
   const [artistsNameList, setArtistNameList] = useState([]);
   const [selectedArtist, setSelected] = useState([]);
   const [selectedGenre, setSelectedGenre] = useState([]);
-  const [responseAfterFilter, setResponseAfterFilter] = useState([]);
   const [releaseDateStart, setReleaseDateStart] = useState("");
   const [releaseDateEnd, setReleaseDateEnd] = useState("");
   const [filteredMovies, setFilteredMovie] = useState([]);
@@ -47,10 +44,6 @@ const Home = (props) => {
         .then((rawsTheResponse) => rawsTheResponse.json())
         .then((receivedRes) => {
           setResponser((arr) => [...arr, ...receivedRes.movies]);
-          setResponseAfterFilter((checker) => [
-            ...checker,
-            ...receivedRes.movies,
-          ]);
           setFilteredMovie((arr) => [...arr, ...receivedRes.movies]);
         });
 
@@ -65,7 +58,6 @@ const Home = (props) => {
           const genreNameArray = receivedRes.genres.map((option) => {
             return option.genre;
           });
-          setGenres((arr) => [...arr, ...receivedRes.genres]);
           setGenreList((checker) => [...checker, ...genreNameArray]);
         });
 
@@ -80,7 +72,6 @@ const Home = (props) => {
           const artistNameArray = receivedRes.artists.map((option) => {
             return option.first_name + " " + option.last_name;
           });
-          setArtists((arr) => [...arr, ...receivedRes.artists]);
           setArtistNameList((arr) => [...arr, ...artistNameArray]);
         });
     }

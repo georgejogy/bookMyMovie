@@ -11,6 +11,7 @@ import "./Header.css";
 import Logo from "../../assets/logo.svg";
 import ReactModal from "react-modal";
 import Close from "@material-ui/icons/Close";
+import { Link } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -30,9 +31,20 @@ const Header = function (props) {
   const [loginPassword, setLoginPassword] = React.useState("");
   const [buttonLogin, setButtonLogin] = React.useState("LOGIN");
   const [signUp, setSignUp] = React.useState("");
-  const [accessTokenValue, setAccessToken] = React.useState("");
+  const [isUserLoggedIn, setUserLoggedIn] = React.useState(false);
   const [loginDetail, setLoginDetail] = React.useState("");
+  const accessedDetailsPage = props.buttonRequest;
+  const detailsID = props.getDetails;
 
+  React.useEffect(() => {
+    const loginInfo = window.sessionStorage.getItem("access-token");
+    console.log(loginInfo);
+    if (loginInfo) {
+      setUserLoggedIn(true);
+    } else {
+      setUserLoggedIn(false);
+    }
+  }, []);
   const closeModal = () => {
     setIsOpen(false);
   };
@@ -44,7 +56,7 @@ const Header = function (props) {
   async function login() {
     console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
-    if (userName == "" || loginPassword == "") {
+    if (userName === "" || loginPassword === "") {
       setLoginDetail("Enter all the values");
     } else {
       try {
@@ -67,11 +79,12 @@ const Header = function (props) {
             "access-token",
             rawResponse.headers.get("access-token")
           );
-          setAccessToken(rawResponse.headers.get("access-token"));
-          console.log(rawResponse.headers.get("access-token"));
           setButtonLogin("LOGOUT");
           setIsOpen(false);
           setLoginDetail("");
+          setUserLoggedIn(true);
+          setUserName("");
+          setLoginPassword("");
         } else {
           const error = new Error();
           error.message = result.message || "Something went wrong.";
@@ -85,8 +98,8 @@ const Header = function (props) {
   }
 
   async function logout() {
-    //const param = window.sessionStorage.getItem("access-token");
-    console.log(accessTokenValue);
+    const param = window.sessionStorage.getItem("access-token");
+
     const rawResponse = await fetch(
       "http://localhost:8085/api/v1/auth/logout",
       {
@@ -94,17 +107,19 @@ const Header = function (props) {
         headers: {
           Accept: "*/*",
           "Content-Type": "application/json",
-          authorization: `Bearer ${accessTokenValue}`,
+          authorization: `Bearer ${param}`,
         },
       }
     );
 
-    const result = rawResponse.json();
+    //const result = rawResponse.json();
     if (rawResponse.ok) {
       setButtonLogin("LOGIN");
+      window.sessionStorage.clear();
+      setUserLoggedIn(false);
     } else {
       const error = new Error();
-      error.message = result.message || "Something went wrong";
+      //error.message = result.message || "Something went wrong";
     }
   }
 
@@ -116,43 +131,52 @@ const Header = function (props) {
       mobile_number: phone,
       password: password,
     };
-    if(email==="" || firstName==="" || lastName==="" || phone==="" || password==""){
-      setSignUp("Enter all the mandatory details !")
-    }
-    else{
+    if (
+      email === "" ||
+      firstName === "" ||
+      lastName === "" ||
+      phone === "" ||
+      password === ""
+    ) {
+      setSignUp("Enter all the mandatory details !");
+    } else {
       console.log(params);
-    fetch("http://localhost:8085/api/v1/signup", {
-      body: JSON.stringify(params),
-      method: "POST",
-      headers: {
-        Accept: "application/json;charset=UTF-8",
-        "Content-Type": "application/json;charset=UTF-8",
-      },
-    })
-      .then((response) => {
-        response.json();
-        setSignUp("Registration Successfull !");
-        setFirstName('');
-        setLastName('');
-        setEmail('');
-        setPassword('');
-        setPhone('');
+      fetch("http://localhost:8085/api/v1/signup", {
+        body: JSON.stringify(params),
+        method: "POST",
+        headers: {
+          Accept: "application/json;charset=UTF-8",
+          "Content-Type": "application/json;charset=UTF-8",
+        },
       })
-      .catch((error) => {
-        setSignUp("Registration not successful");
-        console.log(error);
-      });
+        .then((response) => {
+          response.json();
+          setSignUp("Registration Successfull !");
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          setPhone("");
+        })
+        .catch((error) => {
+          setSignUp("Registration not successful");
+          console.log(error);
+        });
     }
-    
   };
 
   const loginOrLogout = () => {
-    if (buttonLogin === "LOGIN") {
+    console.log(isUserLoggedIn);
+    if (!isUserLoggedIn) {
       setIsOpen(true);
       setButtonLogin("LOGIN");
+    }
+  };
+
+  const handleBookShow = () => {
+    if (buttonLogin === "LOGIN") {
+      setIsOpen(true);
     } else {
-      // setButtonLogin('LOGOUT');
-      logout();
     }
   };
 
@@ -161,16 +185,43 @@ const Header = function (props) {
       <div className="header">
         <img className="img-fluid" src={Logo} alt="logo" />
 
-        <Button
-          variant="contained"
-          className="buttonLogin"
+        {isUserLoggedIn ? (
+          <Button variant="contained" className="buttonLogin" onClick={logout}>
+            Logout
+          </Button>
+        ) : (
+          <Button
+            variant="contained"
+            className="buttonLogin"
+            onClick={loginOrLogout}
+          >
+            Login
+          </Button>
+        )}
+
+        
+        {accessedDetailsPage && isUserLoggedIn && 
+          <Link to={`/bookshow/${detailsID}`}>
+            <Button
+              variant="contained"
+              className="bookMyShow"
+              color="primary"
+              onClick={handleBookShow}
+            >
+              {props.buttonNeeded}
+            </Button>
+          </Link>
+      }
+        {
+          accessedDetailsPage && !isUserLoggedIn && <Button
           onClick={loginOrLogout}
+          variant="contained"
+          color="primary"
+          className="bookMyShow"
         >
-          {buttonLogin}
+          {props.buttonNeeded}
         </Button>
-        {/* <Button variant="contained" className="buttonLogin" color="primary">
-          {BookShow}
-        </Button> */}
+        }
         <div className="modalStyling">
           <ReactModal
             isOpen={modalIsOpen}
@@ -215,7 +266,7 @@ const Header = function (props) {
                   <Button variant="contained" color="primary" onClick={login}>
                     LOGIN
                   </Button>
-                  <br/>
+                  <br />
                 </FormControl>
               </TabPanel>
               <TabPanel value={value} index={1}>
@@ -277,7 +328,7 @@ const Header = function (props) {
                   >
                     SIGN UP
                   </Button>
-                  <br/>
+                  <br />
                 </FormControl>
               </TabPanel>
               {/*  */}
