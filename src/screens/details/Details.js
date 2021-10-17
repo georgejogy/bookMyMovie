@@ -21,6 +21,7 @@ const Details = (props) => {
   const [videoId, setVideoID] = useState();
   const [artists, setArtists] = useState([]);
   const [movieId, setMovieId] = useState();
+  const [starRating,setStarRating] = useState(0);
 
   useEffect(() => {
     async function executeForState() {
@@ -65,6 +66,10 @@ const Details = (props) => {
 
     executeForState();
   }, []);
+
+  const makeStarYellow =(i) =>{
+    setStarRating(i+1);
+  }
 
   return (
     <div>
@@ -119,14 +124,10 @@ const Details = (props) => {
           <Typography>
             <b>Rate this movie:</b>
           </Typography>
-          {[].fill(0).map((s, i) => (
-            <StarBorder />
+          {new Array(5).fill(5).map((s, i) => (
+            <StarBorder style={{color: i<starRating?'yellow':'black'}} key={i} onClick={()=>{setStarRating(i+1)}}/>
           ))}
-          {/* <StarBorder style={{ color: "yellow" }}></StarBorder>
-          <StarBorder></StarBorder>
-          <StarBorder></StarBorder>
-          <StarBorder></StarBorder>
-          <StarBorder></StarBorder> */}
+          
           <Typography className="artist-tag">
             <b>Artists:</b>
           </Typography>
