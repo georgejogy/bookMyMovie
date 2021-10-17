@@ -53,6 +53,7 @@ const Header = function (props) {
     setValue(newValue);
   };
 
+  //Login functionality
   async function login() {
     console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
@@ -97,6 +98,7 @@ const Header = function (props) {
     }
   }
 
+  //Logout functionaility
   async function logout() {
     const param = window.sessionStorage.getItem("access-token");
 
@@ -111,18 +113,16 @@ const Header = function (props) {
         },
       }
     );
-
-    //const result = rawResponse.json();
     if (rawResponse.ok) {
       setButtonLogin("LOGIN");
       window.sessionStorage.clear();
       setUserLoggedIn(false);
     } else {
-      const error = new Error();
-      //error.message = result.message || "Something went wrong";
+      setLoginDetail("Incorrect username or password");
     }
   }
 
+  //Used to take care of sign up functionality. Validations for empty fields provided also taken care here.
   const handleSubmitSignup = async () => {
     const params = {
       email_address: email,
@@ -165,19 +165,19 @@ const Header = function (props) {
     }
   };
 
+  //Used to open the modal when clicking on login button
   const loginOrLogout = () => {
-    console.log(isUserLoggedIn);
     if (!isUserLoggedIn) {
       setIsOpen(true);
       setButtonLogin("LOGIN");
     }
   };
 
+  //Used to open the modal when the user is not logged in and when the user clicks on book show button
   const handleBookShow = () => {
     if (buttonLogin === "LOGIN") {
       setIsOpen(true);
-    } else {
-    }
+    } 
   };
 
   return (
@@ -199,8 +199,7 @@ const Header = function (props) {
           </Button>
         )}
 
-        
-        {accessedDetailsPage && isUserLoggedIn && 
+        {accessedDetailsPage && isUserLoggedIn && (
           <Link to={`/bookshow/${detailsID}`}>
             <Button
               variant="contained"
@@ -211,17 +210,17 @@ const Header = function (props) {
               {props.buttonNeeded}
             </Button>
           </Link>
-      }
-        {
-          accessedDetailsPage && !isUserLoggedIn && <Button
-          onClick={loginOrLogout}
-          variant="contained"
-          color="primary"
-          className="bookMyShow"
-        >
-          {props.buttonNeeded}
-        </Button>
-        }
+        )}
+        {accessedDetailsPage && !isUserLoggedIn && (
+          <Button
+            onClick={loginOrLogout}
+            variant="contained"
+            color="primary"
+            className="bookMyShow"
+          >
+            {props.buttonNeeded}
+          </Button>
+        )}
         <div className="modalStyling">
           <ReactModal
             isOpen={modalIsOpen}

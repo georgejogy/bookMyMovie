@@ -6,7 +6,7 @@ import {
 } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import Header from "../../common/header/Header";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Details.css";
 import YouTube from "react-youtube";
 import { StarBorder } from "@material-ui/icons";
@@ -66,10 +66,6 @@ const Details = (props) => {
 
     executeForState();
   }, []);
-
-  const makeStarYellow =(i) =>{
-    setStarRating(i+1);
-  }
 
   return (
     <div>

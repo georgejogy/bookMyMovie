@@ -78,7 +78,7 @@ const Home = (props) => {
 
     checkTheResponse();
   }, []);
-
+// Used to handle the filters
   const handleFilter = async () => {
     console.log(selectedGenre);
     console.log(selectedArtist);
@@ -107,6 +107,7 @@ const Home = (props) => {
     );
   };
 
+  //Used to handle the changes in artist dropdown filter
   const handleChange = (event) => {
     const value = event.target.value;
     if (value[value.length - 1] === "all") {
@@ -118,6 +119,7 @@ const Home = (props) => {
     setSelected(value);
   };
 
+  //Used to handle the changes in genre dropdown filter
   const handleGenreChange = (event) => {
     const value = event.target.value;
     if (value[value.length - 1] === "all") {
