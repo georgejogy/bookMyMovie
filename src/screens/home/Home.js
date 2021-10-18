@@ -112,6 +112,9 @@ const Home = (props) => {
             if(givenDate < movieDate){
               return movie;
             }
+            else{
+              return null;
+            }
           } else {
             return movie;
           }
@@ -121,6 +124,9 @@ const Home = (props) => {
           if (releaseDateEnd.length > 0) {
             if(givenDate > movieDate){
               return movie;
+            }
+            else{
+              return null;
             }
           } else {
             return movie;
