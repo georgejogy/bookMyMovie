@@ -5,6 +5,7 @@ import {
   Tabs,
   Tab,
   TextField,
+  FormHelperText,
 } from "@material-ui/core";
 import React from "react";
 import "./Header.css";
@@ -35,6 +36,13 @@ const Header = function (props) {
   const [loginDetail, setLoginDetail] = React.useState("");
   const accessedDetailsPage = props.buttonRequest;
   const detailsID = props.getDetails;
+  const [reqLoginUserName,setReqLoginUserName] = React.useState("dispNone");
+  const [reqLoginPassword,setReqLoginPassword] = React.useState("dispNone");
+  const [reqPhone,setReqPhone] = React.useState("dispNone");
+  const [reqEmail,setReqEmail] = React.useState("dispNone");
+  const [reqPassword,setReqPassword] = React.useState("dispNone");
+  const [reqFirstName,setReqFirstName] = React.useState("dispNone");
+  const [reqLastName,setReqLastName] = React.useState("dispNone");
 
   React.useEffect(() => {
     const loginInfo = window.sessionStorage.getItem("access-token");
@@ -55,9 +63,10 @@ const Header = function (props) {
 
   //Login functionality
   async function login() {
-    console.log(userName, loginPassword);
     const param = window.btoa(`${userName}:${loginPassword}`);
     if (userName === "" || loginPassword === "") {
+      userName ==="" ? setReqLoginUserName("dispBlock"):setReqLoginUserName("dispNone");
+      loginPassword==="" ? setReqLoginPassword("dispBlock"):setReqLoginPassword("dispNone");
       setLoginDetail("Enter all the values");
     } else {
       try {
@@ -138,6 +147,11 @@ const Header = function (props) {
       phone === "" ||
       password === ""
     ) {
+      email ==="" ? setReqEmail("dispBlock"):setReqEmail("dispNone");
+      firstName === "" ? setReqFirstName("dispBlock"):setReqFirstName("dispNone")
+      lastName === "" ? setReqLastName("dispBlock"):setReqLastName("dispNone")
+      phone === "" ? setReqPhone("dispBlock"):setReqPhone("dispNone");
+      password === "" ? setReqPassword("dispBlock") :setReqPassword("dispNone");
       setSignUp("Enter all the mandatory details !");
     } else {
       console.log(params);
@@ -151,7 +165,7 @@ const Header = function (props) {
       })
         .then((response) => {
           response.json();
-          setSignUp("Registration Successfull !");
+          setSignUp("Registration Successfull. Please Login !");
           setFirstName("");
           setLastName("");
           setEmail("");
@@ -177,7 +191,7 @@ const Header = function (props) {
   const handleBookShow = () => {
     if (buttonLogin === "LOGIN") {
       setIsOpen(true);
-    } 
+    }
   };
 
   return (
@@ -249,8 +263,11 @@ const Header = function (props) {
                     onChange={(e) => setUserName(e.target.value)}
                     required={true}
                   />
+                  <FormHelperText className={reqLoginUserName}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
-                  <br />
+                  
                   <TextField
                     label="LoginPassword"
                     variant="standard"
@@ -259,9 +276,12 @@ const Header = function (props) {
                     onChange={(e) => setLoginPassword(e.target.value)}
                     required={true}
                   />
+                  <FormHelperText className={reqLoginPassword}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
-                  <br />
-                  <div className="error-details-login">{loginDetail}</div>
+                  
+                  <div className="error-details-login">{loginDetail}</div> 
                   <Button variant="contained" color="primary" onClick={login}>
                     LOGIN
                   </Button>
@@ -279,7 +299,9 @@ const Header = function (props) {
                     onChange={(e) => setFirstName(e.target.value)}
                     required={true}
                   />
-                  <br />
+                  <FormHelperText className={reqFirstName}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
                   <TextField
                     label="Last Name"
@@ -288,7 +310,9 @@ const Header = function (props) {
                     onChange={(e) => setLastName(e.target.value)}
                     required={true}
                   />
-                  <br />
+                  <FormHelperText className={reqLastName}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
                   <TextField
                     label="Email"
@@ -298,7 +322,9 @@ const Header = function (props) {
                     onChange={(e) => setEmail(e.target.value)}
                     required={true}
                   />
-                  <br />
+                  <FormHelperText className={reqEmail}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
                   <TextField
                     label="Password"
@@ -308,7 +334,9 @@ const Header = function (props) {
                     onChange={(e) => setPassword(e.target.value)}
                     required={true}
                   />
-                  <br />
+                  <FormHelperText className={reqPassword}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
                   <TextField
                     label="Mobile"
@@ -317,9 +345,11 @@ const Header = function (props) {
                     onChange={(e) => setPhone(e.target.value)}
                     required={true}
                   />
+                  <FormHelperText className={reqPhone}>
+                    <span className="red">Required</span>
+                  </FormHelperText>
                   <br />
-                  <br />
-                  <div className="error-details-login">{signUp}</div>
+                 <div className="error-details-login">{signUp}</div> 
                   <Button
                     variant="contained"
                     color="primary"

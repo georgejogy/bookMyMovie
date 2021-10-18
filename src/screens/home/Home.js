@@ -78,7 +78,8 @@ const Home = (props) => {
 
     checkTheResponse();
   }, []);
-// Used to handle the filters
+
+  // Used to handle the filters in home page for movies
   const handleFilter = async () => {
     console.log(selectedGenre);
     console.log(selectedArtist);
@@ -90,7 +91,7 @@ const Home = (props) => {
       responser
         .filter((movie) => movie.title.startsWith(movieName))
         .filter((movie) => {
-          if (selectedGenre.length > 0 )
+          if (selectedGenre.length > 0)
             return movie.genres.some((x) => selectedGenre.indexOf(x) > -1);
           else return movie;
         })
@@ -100,6 +101,27 @@ const Home = (props) => {
               (x) =>
                 selectedArtist.indexOf(x.first_name + " " + x.last_name) > -1
             );
+          } else {
+            return movie;
+          }
+        })
+        .filter((movie) => {
+          let givenDate = new Date(releaseDateStart);
+          let movieDate = new Date(movie.release_date);
+          if (releaseDateStart.length > 0) {
+            if(givenDate < movieDate){
+              return movie;
+            }
+          } else {
+            return movie;
+          }
+        }).filter((movie) => {
+          let movieDate = new Date(movie.release_date);
+          let givenDate = new Date(releaseDateEnd);
+          if (releaseDateEnd.length > 0) {
+            if(givenDate > movieDate){
+              return movie;
+            }
           } else {
             return movie;
           }
