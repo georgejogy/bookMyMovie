@@ -46,7 +46,6 @@ const Header = function (props) {
 
   React.useEffect(() => {
     const loginInfo = window.sessionStorage.getItem("access-token");
-    console.log(loginInfo);
     if (loginInfo) {
       setUserLoggedIn(true);
     } else {
@@ -154,7 +153,6 @@ const Header = function (props) {
       password === "" ? setReqPassword("dispBlock") :setReqPassword("dispNone");
       setSignUp("Enter all the mandatory details !");
     } else {
-      console.log(params);
       fetch("http://localhost:8085/api/v1/signup", {
         body: JSON.stringify(params),
         method: "POST",
@@ -174,7 +172,6 @@ const Header = function (props) {
         })
         .catch((error) => {
           setSignUp("Registration not successful");
-          console.log(error);
         });
     }
   };

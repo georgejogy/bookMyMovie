@@ -81,11 +81,6 @@ const Home = (props) => {
 
   // Used to handle the filters in home page for movies
   const handleFilter = async () => {
-    console.log(selectedGenre);
-    console.log(selectedArtist);
-    console.log(releaseDateEnd);
-    console.log(releaseDateStart);
-    console.log(movieName);
 
     setFilteredMovie(
       responser
@@ -272,7 +267,7 @@ const Home = (props) => {
                     <Button
                       variant="contained"
                       color="primary"
-                      fullWidth=""
+                      fullWidth
                       onClick={handleFilter}
                     >
                       APPLY
